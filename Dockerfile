@@ -1,17 +1,17 @@
-FROM python:3.9-slim
+FROM nvidia/cuda:11.6-cudnn8-runtime-ubuntu20.04
 
 WORKDIR /app
 
 COPY * /app/
-RUN apt-get update && apt-get install -y mecab libmecab-dev swig gcc build-essential
 
-RUN apt-get install ffmpeg ffmpeg-devel -y
-RUN ffmpeg -h
+RUN apt-get update && apt-get install -y python3-pip mecab libmecab-dev swig gcc build-essential ffmpeg
+
+RUN pip3 install torch==1.13.1+cu116 torchvision==0.14.1+cu116 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu116 -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 RUN pip3 install -r requirements.txt
 
 RUN cd monotonic_align && \
-    python setup.py build_ext --inplace && \
+    python3 setup.py build_ext --inplace && \
     cp monotonic_align/*.pyd . && \
     cd ..
 
