@@ -9,7 +9,7 @@ COPY * /app/
 
 # 安装依赖项，清理缓存
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    apt-get install -y tzdata python3-pip mecab libmecab-dev swig gcc build-essential ffmpeg && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata python3-pip mecab libmecab-dev swig gcc build-essential ffmpeg && \
     ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     dpkg-reconfigure --frontend noninteractive tzdata && \
     rm -rf /var/lib/apt/lists/* && \
