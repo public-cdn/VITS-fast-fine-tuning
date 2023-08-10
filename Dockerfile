@@ -9,7 +9,9 @@ COPY * /app/
 
 # 安装依赖项，清理缓存
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    apt-get install -y python3-pip mecab libmecab-dev swig gcc build-essential ffmpeg && \
+    apt-get install -y tzdata python3-pip mecab libmecab-dev swig gcc build-essential ffmpeg && \
+    ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+    dpkg-reconfigure --frontend noninteractive tzdata && \
     rm -rf /var/lib/apt/lists/* && \
     pip3 install torch==1.13.1+cu116 torchvision==0.14.1+cu116 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu116 -i https://pypi.tuna.tsinghua.edu.cn/simple && \
     pip3 install -r requirements.txt && \
